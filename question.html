@@ -123,7 +123,7 @@
             style="
               display: inline-block;
               padding: 8px 16px;
-              font-size: 0.9em;
+              font-size: 1.1em;
               background-color: #2d3e50;
               color: white;
               text-decoration: none;
@@ -1901,7 +1901,7 @@
         const parts = ans.text.match(/^(.+?)\s*(（?\(?\d+個;\s*\d+\.?\d*%[)）]?)$/);
         let coloredText = ans.text;
         if (parts) {
-          coloredText = `<span style="color: ${color};">${parts[1]}</span> ${parts[2]}`;
+          coloredText = `<span style="color: ${color};">${parts[1]}</span>`;
         } else {
           coloredText = `<span style="color: ${color};">${ans.text}</span>`;
         }
