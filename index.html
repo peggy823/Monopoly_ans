@@ -2,6 +2,8 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ 加這行 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>下一站好天氣</title>
   <style>
     body {
@@ -32,74 +34,49 @@
     .hotspot:hover {
       background-color: rgba(30,40,50,0.95);
     }
+    @media screen and (max-width: 768px) {
+      .hotspot {
+        font-size: 2.8vw;  /* ✅ 文字縮小一點，防止太擠 */
+        padding: 0.2em 0.6em;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="map-container">
     <img src="map_homepage.png" alt="台灣地圖">
-    <a class="hotspot" style="top: 8%; left:75%;" href="question.html?sheet=鞍部">鞍部氣象站</a>
-<a class="hotspot" style="top: 11%; left:76%;" href="question.html?sheet=竹子湖">竹子湖氣象站</a>
-<a class="hotspot" style="top: 2%; left:81%;" href="question.html?sheet=彭佳嶼">彭佳嶼氣象站</a>
-<a class="hotspot" style="top:56%; left:47%" href="question.html?sheet=東吉島">東吉島氣象站</a>
-<a class="hotspot" style="top:50%; left:69%;" href="question.html?sheet=玉山">玉山氣象站</a>
-<a class="hotspot" style="top: 7%; left:81%;" href="question.html?sheet=基隆">基隆氣象站</a>
-<a class="hotspot" style="top:25%; left:79%;" href="question.html?sheet=蘇澳">蘇澳氣象站</a>
-<a class="hotspot" style="top:22%; left:65%;" href="question.html?sheet=後龍">後龍氣象站</a>
-<a class="hotspot" style="top:52%; left:47%;" href="question.html?sheet=澎湖">澎湖氣象站</a>
-<a class="hotspot" style="top:91%; left:63%;" href="question.html?sheet=恆春">恆春氣象站</a>
-<a class="hotspot" style="top:19%; left:79%;" href="question.html?sheet=宜蘭">宜蘭氣象站</a>
-<a class="hotspot" style="top:42%; left:76%;" href="question.html?sheet=花蓮">花蓮氣象站</a>
-<a class="hotspot" style="top:31%; left:44%;" href="question.html?sheet=金門">金門氣象站</a>
-<a class="hotspot" style="top:53%; left:58%;" href="question.html?sheet=嘉義">嘉義氣象站</a>
-<a class="hotspot" style="top:49%; left:61%;" href="question.html?sheet=古坑">古坑氣象站</a>
-<a class="hotspot" style="top:78%; left:69%;" href="question.html?sheet=大武">臺東氣象站<br>大武站區</a>
-<a class="hotspot" style="top:42%; left:67%;" href="question.html?sheet=日月潭">日月潭氣象站</a>
-<a class="hotspot" style="top:53%; left:66%;" href="question.html?sheet=阿里山">阿里山氣象站</a>
-<a class="hotspot" style="top:72%; left:73%;" href="question.html?sheet=臺東">臺東氣象站</a>
-<a class="hotspot" style="top:65%; left:76%;" href="question.html?sheet=成功">臺東氣象站<br>成功站區</a>
-<a class="hotspot" style="top:76%; left:58%;" href="question.html?sheet=高雄">高雄氣象站</a>
-<a class="hotspot" style="top:34%; left:65%;" href="question.html?sheet=臺中">臺中氣象站</a>
-<a class="hotspot" style="top:16%; left:63%;" href="question.html?sheet=新竹">新竹氣象站</a>
-<a class="hotspot" style="top:89%; left:74%;" href="question.html?sheet=蘭嶼">蘭嶼氣象站</a>
-<a class="hotspot" style="top:14%; left:78%;" href="question.html?sheet=新北">新北氣象站</a>
-<a class="hotspot" style="top:12%; left:64%;" href="question.html?sheet=新屋">新屋氣象站</a>
-<a class="hotspot" style="top:62%; left:57%;" href="question.html?sheet=南區氣象中心">臺灣南區<br>氣象中心</a>
-<a class="hotspot" style="top:15%; left:44%;" href="question.html?sheet=馬祖">馬祖氣象站</a>
-<a class="hotspot" style="top:42%; left:60%;" href="question.html?sheet=田中">田中氣象站</a>
-<a class="hotspot" style="top:28%; left:60%;" href="question.html?sheet=梧棲">臺中氣象站<br>梧棲站區</a>
-<a class="hotspot" style="top: 5%; left:68%;" href="question.html?sheet=淡水">臺北氣象站<br>淡水站區</a>
-<a class="hotspot" style="top:14%; left:71%;" href="question.html?sheet=臺北天文站(臺北站)">臺北天文站<br>(臺北站)</a>
+    <a class="hotspot" style="top: 8%; left:58%;" href="question.html?sheet=鞍部">鞍部氣象站</a>
+<a class="hotspot" style="top: 11%; left:60%;" href="question.html?sheet=竹子湖">竹子湖氣象站</a>
+<a class="hotspot" style="top: 2%; left:77%;" href="question.html?sheet=彭佳嶼">彭佳嶼氣象站</a>
+<a class="hotspot" style="top:56%; left:5%" href="question.html?sheet=東吉島">東吉島氣象站</a>
+<a class="hotspot" style="top:52%; left:47%;" href="question.html?sheet=玉山">玉山氣象站</a>
+<a class="hotspot" style="top: 6%; left:75%;" href="question.html?sheet=基隆">基隆氣象站</a>
+<a class="hotspot" style="top:23%; left:75%;" href="question.html?sheet=蘇澳">蘇澳氣象站</a>
+<a class="hotspot" style="top:22%; left:35%;" href="question.html?sheet=後龍">後龍氣象站</a>
+<a class="hotspot" style="top:48%; left:5%;" href="question.html?sheet=澎湖">澎湖氣象站</a>
+<a class="hotspot" style="top:91%; left:35%;" href="question.html?sheet=恆春">恆春氣象站</a>
+<a class="hotspot" style="top:19%; left:75%;" href="question.html?sheet=宜蘭">宜蘭氣象站</a>
+<a class="hotspot" style="top:39%; left:70%;" href="question.html?sheet=花蓮">花蓮氣象站</a>
+<a class="hotspot" style="top:23%; left:10%;" href="question.html?sheet=金門">金門氣象站</a>
+<a class="hotspot" style="top:51%; left:24%;" href="question.html?sheet=嘉義">嘉義氣象站</a>
+<a class="hotspot" style="top:47%; left:31%;" href="question.html?sheet=古坑">古坑氣象站</a>
+<a class="hotspot" style="top:74%; left:44%;" href="question.html?sheet=大武">臺東氣象站<br>大武站區</a>
+<a class="hotspot" style="top:42%; left:47%;" href="question.html?sheet=日月潭">日月潭氣象站</a>
+<a class="hotspot" style="top:56%; left:30%;" href="question.html?sheet=阿里山">阿里山氣象站</a>
+<a class="hotspot" style="top:70%; left:48%;" href="question.html?sheet=臺東">臺東氣象站</a>
+<a class="hotspot" style="top:62%; left:51%;" href="question.html?sheet=成功">臺東氣象站<br>成功站區</a>
+<a class="hotspot" style="top:70%; left:23%;" href="question.html?sheet=高雄">高雄氣象站</a>
+<a class="hotspot" style="top:34%; left:33%;" href="question.html?sheet=臺中">臺中氣象站</a>
+<a class="hotspot" style="top:16%; left:39%;" href="question.html?sheet=新竹">新竹氣象站</a>
+<a class="hotspot" style="top:89%; left:64%;" href="question.html?sheet=蘭嶼">蘭嶼氣象站</a>
+<a class="hotspot" style="top:14%; left:75%;" href="question.html?sheet=新北">新北氣象站</a>
+<a class="hotspot" style="top:12%; left:43%;" href="question.html?sheet=新屋">新屋氣象站</a>
+<a class="hotspot" style="top:62%; left:22%;" href="question.html?sheet=南區氣象中心">臺灣南區<br>氣象中心</a>
+<a class="hotspot" style="top:10%; left:10%;" href="question.html?sheet=馬祖">馬祖氣象站</a>
+<a class="hotspot" style="top:42%; left:30%;" href="question.html?sheet=田中">田中氣象站</a>
+<a class="hotspot" style="top:28%; left:20%;" href="question.html?sheet=梧棲">臺中氣象站<br>梧棲站區</a>
+<a class="hotspot" style="top: 1%; left:52%;" href="question.html?sheet=淡水">臺北氣象站<br>淡水站區</a>
+<a class="hotspot" style="top:16%; left:58%;" href="question.html?sheet=臺北天文站(臺北站)">臺北天文站<br>(臺北站)</a>
   </div>
-
-  <button onclick="resetAllAnswers()" style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #c0392b;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 999;
-  ">清除所有答案記錄</button>
-
-  <script>
-    function resetAllAnswers() {
-      const sheets = [
-        "鞍部", "竹子湖", "彭佳嶼", "東吉島", "玉山", "基隆", "蘇澳", "後龍", "澎湖", "恆春",
-        "宜蘭", "花蓮", "金門", "嘉義", "古坑", "大武", "日月潭", "阿里山", "臺東", "成功",
-        "高雄", "臺中", "新竹", "蘭嶼", "新北", "新屋", "南區氣象中心", "馬祖", "田中",
-        "梧棲", "淡水", "臺北天文站(臺北站)"
-      ];
-      sheets.forEach(sheet => {
-        for (let i = 1; i <= 20; i++) {
-          localStorage.removeItem(`${sheet}_ans${i}_Shown`);
-        }
-      });
-      alert("✅ 已清除所有站的答案記錄！");
-    }
-  </script>
 </body>
 </html>
