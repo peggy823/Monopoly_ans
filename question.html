@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Reveal.js - 問題共用版</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    html {
+      font-size: clamp(18px, 1.5vw, 24px);
+    }
+    html,body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .reveal {
+      height: 100vh;
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
+      font-size: 1.2em;
+    }
+    .reveal .slides {
+      display: block !important;   /* 移除 flex 排版 */
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    section {
+      width: 100%;
+      height: 100%;
+      display: block;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 0;
+    }
+    h2 {
+      background: rgba(12, 11, 11, 0.8);
+      padding: 0.6em 1.2em;
+      border-radius: 2em;
+      font-size: 10em;
+      margin-top: 0;
+    }
+    .answer-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 45%;
+      margin: 0em 0 0em 10%;
+      padding: 0.2em 0.8em;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 0.4em;
+    }
+    .answer-label {
+      font-weight: bold;
+      width: 6em;
+      display: inline-block;
+      text-align: right;
+    }
+    .answer-text {
+      font-size: 1.5em;
+      visibility: visible;  /* 預設直接顯示 */
+      opacity: 1;
+      min-height: 1.1em;
+      flex: 1;
+      min-width: 10em;
+      text-align: left;
+      padding-left: 0.6em;
+      white-space: nowrap;
+      overflow: visible;
+      text-overflow: unset;
+      transition: none; /* 取消過渡動畫 */
+    }
+    .score-num {
+      font-size: 2.2em;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    .reset-button {
+      display: none; /* 隱藏 */
+    }
+    @media screen and (max-width: 768px) {
+      section {
+        padding-top: 0em; /* 或 0em 如果要更貼緊 */
+      }
+      h2 {
+        margin-top: -0.8em; /* 把標題更貼頂端 */
+        font-size: 2.5em;    /* 手機上字體稍微縮小以避免壓到內容 */
+      }
+    }
+    html, body, .reveal, .reveal .slides, section {
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .reveal .slides section {
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2 id="station-title">問題：氣象站</h2>
+
+        <div id="answers-container"></div>
+
+        <div style="text-align:center; margin-top: 20px;">
+          <a
+            href="index.html"
+            style="
+              display: inline-block;
+              padding: 8px 16px;
+              font-size: 0.9em;
+              background-color: #2d3e50;
+              color: white;
+              text-decoration: none;
+              border-radius: 6px;
+            "
+            >返回首頁</a
+          >
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: false,
+      progress: false,
+      center: false,
+      hash: true,
+      width: 1280,
+      transition: 'fade',
+    });
+
+    function getSheetFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('sheet');
+    }
+
+    const allData = {
+                      "鞍部": [
+                        {
+                          "text": "陽明山/陽明山國家公園  (59個; 13.5%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "大屯山  (42個; 9.6%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "火山/小油坑/硫磺/溫泉/地熱谷  (37個; 8.5%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "濃霧/雲霧繚繞  (33個; 7.6%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "濕冷/潮濕/低溫  (25個; 5.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "二子坪步道/停車場/蝴蝶花廊  (19個; 4.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "下雪  (17個; 3.9%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "馬鞍/高山中的鞍部/兩山間山脊線的最低處  (16個; 3.7%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "花季：櫻花/芒花/海芋  (16個; 3.7%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "航空氣象/高山氣象  (13個; 3.0%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "登山  (12個; 2.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "巴拉卡公路  (10個; 2.3%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "夜景  (9個; 2.1%)",
+                          "score": 1
+                        }
+                      ],
+                      "日月潭": [
+                        {
+                          "text": "紅茶/茶葉  (57個; 13.1%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "風景區/觀光景點/遊客多  (36個; 8.3%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "泳渡日月潭/萬人泳渡  (32個; 7.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "九蛙  (22個; 5.0%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "貓囒山  (17個; 3.9%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "九族文化村  (16個; 3.7%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "邵族文化/原住民  (16個; 3.7%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "纜車  (14個; 3.2%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "湖光山色  (14個; 3.2%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "涵碧樓  (13個; 3.0%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "環潭自行車  (12個; 2.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "921地震  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "水力發電廠  (6個; 1.4%)",
+                          "score": 1
+                        }
+                      ],
+                      "竹子湖": [
+                        {
+                          "text": "海芋/海芋季/海芋步道  (72個; 16.5%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "溫泉  (67個; 15.4%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "陽明山/陽明山國家公園  (66個; 15.1%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "櫻花  (40個; 9.2%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "繡球花  (24個; 5.5%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "火山/小油坑  (20個; 4.6%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "七星山  (12個; 2.8%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "濃霧濕冷  (10個; 2.3%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "硫磺  (8個; 1.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "夜景  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "竹林/竹子  (4個; 0.9%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "陽明書屋  (4個; 0.9%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "花鐘  (4個; 0.9%)",
+                          "score": 3
+                        }
+                      ],
+                      "臺中": [
+                        {
+                          "text": "臺中公園  (57個; 13.1%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "太陽餅  (51個; 11.7%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "大甲媽/媽祖遶境活動/大甲鎮瀾宮  (28個; 6.4%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "一中街  (26個; 6.0%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "逢甲夜市  (22個; 5.0%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "科博館  (15個; 3.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "慶記  (13個; 3.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "百年氣象站  (12個; 2.8%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "直轄市/都市  (10個; 2.3%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "火力發電廠  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "勤美綠園道/草悟道  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "高美濕地  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "國家歌劇院  (7個; 1.6%)",
+                          "score": 2
+                        }
+                      ],
+                      "彭佳嶼": [
+                        {
+                          "text": "海島/離島/北方三島/最北島嶼  (68個; 15.6%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "彭佳嶼燈塔  (56個; 12.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "海釣  (29個; 6.7%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "強風浪大/東北季風  (26個; 6.0%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "坐船  (21個; 4.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "鐵炮百合/麝香百合花  (18個; 4.1%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "西北颱/颱風  (16個; 3.7%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "探空/高空氣象觀測/探空氣球  (15個; 3.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "軍方/軍事管制區  (13個; 3.0%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "基隆外海/基隆  (12個; 2.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "臺灣最北端氣象站  (事實不是><)  (12個; 2.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "海鳥棲地/候鳥中途站  (11個; 2.5%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "火山島  (10個; 2.3%)",
+                          "score": 1
+                        }
+                      ],
+                      "臺東": [
+                        {
+                          "text": "熱氣球/國際熱氣球嘉年華  (45個; 10.3%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "釋迦  (32個; 7.3%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "焚風  (22個; 5.0%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "颱風  (22個; 5.0%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "池上米/池上便當/米倉  (21個; 4.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "知本溫泉  (21個; 4.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "原住民/南島語族/卑南族/卑南遺址/阿美族豐年祭  (19個; 4.4%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "鐵花村  (19個; 4.4%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "伯朗大道/金城武樹  (16個; 3.7%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "日式建築/日治時期  (14個; 3.2%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "百年黑松/琉球松  (13個; 3.0%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "東海岸/臺灣東部  (12個; 2.8%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "太平洋/海洋  (10個; 2.3%)",
+                          "score": 1
+                        }
+                      ],
+                      "東吉島": [
+                        {
+                          "text": "離島/海島/南方四島/南方四島國家公園  (81個; 18.6%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "燈塔  (30個; 6.9%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "強風  (27個; 6.2%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "澎湖  (25個; 5.7%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "黑水溝  (25個; 5.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "羊  (23個; 5.3%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "坐船  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "漁港/捕魚/魚種多樣  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "居民很少的地方/人煙罕至  (13個; 3.0%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "玄武岩  (10個; 2.3%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "藍洞  (10個; 2.3%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "海洋  (9個; 2.1%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "臺灣海峽  (7個; 1.6%)",
+                          "score": 1
+                        }
+                      ],
+                      "成功": [
+                        {
+                          "text": "三仙台  (51個; 11.7%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "漁港  (40個; 9.2%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "蔚藍海岸/東部海岸/海  (32個; 7.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "旗魚/鏢旗魚  (32個; 7.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "颱風  (18個; 4.1%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "海鮮/海產/生魚片  (18個; 4.1%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "太平洋  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "柴魚  (13個; 3.0%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "新港  (9個; 2.1%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "焚風  (8個; 1.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "賞鯨  (8個; 1.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "鬼頭刀  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "無人站/自動站  (7個; 1.6%)",
+                          "score": 2
+                        }
+                      ],
+                      "玉山": [
+                        {
+                          "text": "東北亞/臺灣最高峰 /高山/百岳  (82個; 18.8%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "下雪  (51個; 11.7%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "東北亞/全臺最高氣象站 /最高行政機關  (49個; 11.2%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "千元大鈔  (22個; 5.0%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "登山  (19個; 4.4%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "冷  (16個; 3.7%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "直升機  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "雲海  (13個; 3.0%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "黃喉貂/黑熊  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "玉山北峰  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "玉山國家公園  (11個; 2.5%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "排雲山莊  (8個; 1.8%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "上班艱辛(徒步、寒冷)  (7個; 1.6%)",
+                          "score": 1
+                        }
+                      ],
+                      "高雄": [
+                        {
+                          "text": "港都/高雄港/漁港  (47個; 10.8%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "都會公園  (34個; 7.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "愛河  (32個; 7.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "駁二特區  (31個; 7.1%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "打狗  (17個; 3.9%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "熱  (17個; 3.9%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "85大樓  (16個; 3.7%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "旗津  (16個; 3.7%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "工業  (13個; 3.0%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "西子灣  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "直轄市/都會/六都  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "壽山  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "輕軌  (7個; 1.6%)",
+                          "score": 2
+                        }
+                      ],
+                      "蘇澳": [
+                        {
+                          "text": "冷泉  (81個; 18.6%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "漁港/港口/港口氣象站/港口城市  (71個; 16.3%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "海鮮/鯖魚/鮪魚  (35個; 8.0%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "蘇花公路  (30個; 6.9%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "蘇澳港  (24個; 5.5%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "下雨  (24個; 5.5%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "南方澳  (20個; 4.6%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "在港務局樓上/屋頂觀測坪/港務大樓  (18個; 4.1%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "自動站/目前已是無人站  (8個; 1.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "斷橋  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "東北季風  (5個; 1.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "颱風  (5個; 1.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "粉鳥林  (4個; 0.9%)",
+                          "score": 1
+                        }
+                      ],
+                      "新竹": [
+                        {
+                          "text": "新竹科學園區/科技新貴/工程師/半導體/超級電腦  (84個; 19.3%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "米粉  (77個; 17.7%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "九降風  (58個; 13.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "貢丸  (34個; 7.8%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "城隍廟  (27個; 6.2%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "風城  (26個; 6.0%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "客家文化  (8個; 1.8%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "竹北市  (6個; 1.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "柿餅  (6個; 1.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "教保中心  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "地震氣象站/因1935年地震增設的氣象站  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "台積電  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "竹北交流道旁  (5個; 1.1%)",
+                          "score": 4
+                        }
+                      ],
+                      "後龍": [
+                        {
+                          "text": "高速公路旁的氣象站  (72個; 16.5%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "苗栗國  (55個; 12.6%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "後龍過港隧道  (37個; 8.5%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "客家  (30個; 6.9%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "原後龍收費站  (25個; 5.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "媽祖/白沙屯  (14個; 3.2%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "客家桐花  (13個; 3.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "後龍好望角  (13個; 3.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "風車/風力發電  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "高鐵  (10個; 2.3%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "濃霧  (9個; 2.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "新設站點  (9個; 2.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "造橋鄉  (8個; 1.8%)",
+                          "score": 1
+                        }
+                      ],
+                      "蘭嶼": [
+                        {
+                          "text": "達悟(雅美)族/原住民  (86個; 19.7%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "飛魚  (72個; 16.5%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "颱風  (29個; 6.7%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "拼板舟  (27個; 6.2%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "台灣氣象史上最強陣風紀錄(95.2m/s)/強風  (21個; 4.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "離島/海島  (19個; 4.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "浮潛/潛水  (17個; 3.9%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "核廢料  (15個; 3.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "丁字褲  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "飛機常停飛/交通不方便/小飛機  (11個; 2.5%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "地下屋  (10個; 2.3%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "日出  (6個; 1.4%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "藍天碧海  (6個; 1.4%)",
+                          "score": 2
+                        }
+                      ],
+                      "澎湖": [
+                        {
+                          "text": "花火節  (66個; 15.1%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "玄武岩  (29個; 6.7%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "海鮮/小卷  (27個; 6.2%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "風很大/東北季風強  (26個; 6.0%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "離島/島嶼/海島  (23個; 5.3%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "仙人掌冰/仙人掌  (22個; 5.0%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "跨海大橋  (20個; 4.6%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "外婆的澎湖灣  (16個; 3.7%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "菊島/天人菊  (15個; 3.4%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "天后宮  (15個; 3.4%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "雙心石滬  (14個; 3.2%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "黑糖糕  (14個; 3.2%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "最早設立的5座氣象站之一/百年測候所  (10個; 2.3%)",
+                          "score": 1
+                        }
+                      ],
+                      "新北": [
+                        {
+                          "text": "新店/碧潭  (75個; 17.2%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "高空氣象觀測站/探空氣球  (71個; 16.3%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "儀器檢校中心  (33個; 7.6%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "綠建築/建築物很有特色/圓形建築  (21個; 4.8%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "風洞  (11個; 2.5%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "吊橋  (11個; 2.5%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "前身是板橋氣象站  (11個; 2.5%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "耶誕城  (10個; 2.3%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "烏來瀑布  (9個; 2.1%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "氣象署新北園區  (8個; 1.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "鶯歌陶瓷/三峽老街  (8個; 1.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "九份金瓜石/九份老街  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "雷陣雨/雨多  (7個; 1.6%)",
+                          "score": 2
+                        }
+                      ],
+                      "恆春": [
+                        {
+                          "text": "落山風  (67個; 15.4%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "國境之南/本島最南端  (46個; 10.6%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "墾丁/墾丁國家公園  (46個; 10.6%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "洋蔥  (23個; 5.3%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "恆春古城  (22個; 5.0%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "四季如春  (19個; 4.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "海角七號  (17個; 3.9%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "熱  (16個; 3.7%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "最南邊的有人氣象站  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "核電廠/核三廠  (11個; 2.5%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "古城門  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "百年站/最早設立的5座氣象站之一  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "沙灘  (6個; 1.4%)",
+                          "score": 1
+                        }
+                      ],
+                      "新屋": [
+                        {
+                          "text": "永安漁港  (49個; 11.2%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "衛星接收站  (40個; 9.2%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "強風  (26個; 6.0%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "海邊  (25個; 5.7%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "臺灣桃園國際機場  (24個; 5.5%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "客家文化  (23個; 5.3%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "偏僻  (19個; 4.4%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "農業博覽會  (15個; 3.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "新屋綠色走廊/綠色隧道  (15個; 3.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "風力發電/風機/風車  (14個; 3.2%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "埤塘（人工蓄水池）  (13個; 3.0%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "空曠/站區很廣大  (13個; 3.0%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "桃園  (9個; 2.1%)",
+                          "score": 1
+                        }
+                      ],
+                      "宜蘭": [
+                        {
+                          "text": "多雨  (41個; 9.4%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "蘭陽平原  (30個; 6.9%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "三星蔥  (28個; 6.4%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "龜山島  (26個; 6.0%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "童玩節  (21個; 4.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "牛舌餅  (18個; 4.1%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "礁溪溫泉  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "雪山隧道  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "太平山  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "臺北後花園  (11個; 2.5%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "傳藝中心  (10個; 2.3%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "鴨賞  (10個; 2.3%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "冬山河  (9個; 2.1%)",
+                          "score": 1
+                        }
+                      ],
+                      "南區氣象中心": [
+                        {
+                          "text": "胡椒管/十八角樓/原臺南測候所建築  (46個; 10.6%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "古都/古城/府城文化  (38個; 8.7%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "科普教育/展示場/氣象博物館/歷史文物展示區  (35個; 8.0%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "美食之都  (34個; 7.8%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "古蹟  (33個; 7.6%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "安平古堡/安平/安平老街/熱蘭遮城  (33個; 7.6%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "小吃：牛肉湯/鱔魚意麵/擔仔麵/蝦捲/碗糕/虱目魚  (31個; 7.1%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "赤崁樓  (15個; 3.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "全糖/螞蟻人/食物甜/製糖業  (13個; 3.0%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "孔廟  (13個; 3.0%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "台南市區/直轄市  (9個; 2.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "鄭成功  (8個; 1.8%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "百年氣象站/全臺最早設立的五座氣象站之一  (7個; 1.6%)",
+                          "score": 1
+                        }
+                      ],
+                      "花蓮": [
+                        {
+                          "text": "地震  (76個; 17.4%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "太魯閣/太魯閣國家公園  (55個; 12.6%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "麻糬  (27個; 6.2%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "探空氣球/高空氣象觀測  (19個; 4.4%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "山  (16個; 3.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "颱風多  (15個; 3.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "七星潭  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "原住民  (13個; 3.0%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "東大門夜市  (10個; 2.3%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "剝皮辣椒  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "清水斷崖  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "雷達  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "海岸山脈  (7個; 1.6%)",
+                          "score": 1
+                        }
+                      ],
+                      "馬祖": [
+                        {
+                          "text": "藍眼淚  (86個; 19.7%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "老酒/陳年高梁  (39個; 8.9%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "濃霧  (37個; 8.5%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "戰地/軍事背景  (37個; 8.5%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "海島/外島/島嶼/離島  (29個; 6.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "八八坑道  (24個; 5.5%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "很冷/低溫  (17個; 3.9%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "媽祖/媽祖巨神像  (14個; 3.2%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "南竿  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "最北/緯度最高氣象站  (11個; 2.5%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "芹壁/北竿  (10個; 2.3%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "國之北疆  (9個; 2.1%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "傳統閩東式建築  (8個; 1.8%)",
+                          "score": 1
+                        }
+                      ],
+                      "金門": [
+                        {
+                          "text": "高粱酒  (81個; 18.6%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "戰地/823砲戰/戰地遺跡  (59個; 13.5%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "風獅爺  (40個; 9.2%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "砲彈菜刀/鋼刀  (32個; 7.3%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "小三通  (23個; 5.3%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "貢糖  (23個; 5.3%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "濃霧  (17個; 3.9%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "閩式建築/閩南文化  (17個; 3.9%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "離島/海島  (12個; 2.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "軍人  (11個; 2.5%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "牛肉乾  (10個; 2.3%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "金門機場/飛機  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "坑道/翟山坑道  (7個; 1.6%)",
+                          "score": 2
+                        }
+                      ],
+                      "田中": [
+                        {
+                          "text": "高鐵彰化站  (74個; 17.0%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "臺灣米倉/稻田/田中央/農業/農村  (57個; 13.1%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "教育展示場/環形劇場/氣象地震教育空間  (36個; 8.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "田中馬拉松  (27個; 6.2%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "八卦山/大佛  (26個; 6.0%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "肉圓/爌肉飯  (23個; 5.3%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "鹿港  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "花卉/望高寮花海  (12個; 2.8%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "八堡圳  (11個; 2.5%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "心型觀測坪  (10個; 2.3%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "彰化縣  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "襪子/襪仔王觀光工廠  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "田中火車站  (6個; 1.4%)",
+                          "score": 1
+                        }
+                      ],
+                      "嘉義": [
+                        {
+                          "text": "火雞肉飯  (70個; 16.1%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "農業/農業氣象站  (53個; 12.2%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "嘉南平原  (28個; 6.4%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "北回歸線  (25個; 5.7%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "田/稻田  (19個; 4.4%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "阿里山  (18個; 4.1%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "林聰明砂鍋魚頭  (15個; 3.4%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "方塊酥  (12個; 2.8%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "KANO  (10個; 2.3%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "文化路夜市  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "林業鐵道/森林鐵路  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "蘭潭水庫/風景區  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "福義軒食品/蛋捲  (7個; 1.6%)",
+                          "score": 4
+                        }
+                      ],
+                      "梧棲": [
+                        {
+                          "text": "臺中港/梧棲漁港/港口  (137個; 31.4%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "三井OUTLET/摩天輪  (56個; 12.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "強風/海風  (28個; 6.4%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "高美濕地  (20個; 4.6%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "海線  (20個; 4.6%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "海鮮/海產  (18個; 4.1%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "改成自動/無人站  (15個; 3.4%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "港務大樓  (13個; 3.0%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "工業區  (10個; 2.3%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "媽祖文化/廟宇/大甲媽/大庄媽  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "風力發電  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "遷站至田中  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "梧棲老街  (7個; 1.6%)",
+                          "score": 1
+                        }
+                      ],
+                      "古坑": [
+                        {
+                          "text": "咖啡  (126個; 28.9%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "劍湖山遊樂世界/摩天輪  (60個; 13.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "最新的氣象站/最後一塊氣象站拼圖  (31個; 7.1%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "綠色隧道  (31個; 7.1%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "花卉中心  (23個; 5.3%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "農業大縣/農業氣象  (21個; 4.8%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "雲林  (10個; 2.3%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "草嶺  (10個; 2.3%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "茶園  (6個; 1.4%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "北港朝天宮  (6個; 1.4%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "古坑休息站  (5個; 1.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "柳丁/柑橘  (5個; 1.1%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "華山夜景  (5個; 1.1%)",
+                          "score": 3
+                        }
+                      ],
+                      "淡水": [
+                        {
+                          "text": "淡水老街  (51個; 11.7%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "漁人碼頭/渡輪  (44個; 10.1%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "淡水阿給  (41個; 9.4%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "紅毛城  (32個; 7.3%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "夕陽/淡海夕照  (29個; 6.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "鐵蛋/阿婆鐵蛋  (20個; 4.6%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "紅樹林  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "無人站/自動站  (14個; 3.2%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "淡水捷運站/捷運紅線/終點站  (13個; 3.0%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "淡水河  (12個; 2.8%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "低溫紀錄多/很冷  (11個; 2.5%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "魚酥  (6個; 1.4%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "魚丸  (6個; 1.4%)",
+                          "score": 2
+                        }
+                      ],
+                      "大武": [
+                        {
+                          "text": "焚風  (74個; 17.0%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "南迴公路  (39個; 8.9%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "原住民/部落文化/阿美族/排灣族/布農族  (23個; 5.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "太平洋  (17個; 3.9%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "海邊  (16個; 3.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "颱風  (16個; 3.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "多良車站  (13個; 3.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "東海岸  (13個; 3.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "釋迦  (9個; 2.1%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "最熱氣象站/高溫  (9個; 2.1%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "迎曙光/第一道曙光/日出  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "南迴鐵路  (7個; 1.6%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "無人站  (7個; 1.6%)",
+                          "score": 2
+                        }
+                      ],
+                      "臺北天文站(臺北站)": [
+                        {
+                          "text": "太陽黑子/天文觀測  (63個; 14.4%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "望遠鏡  (47個; 10.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "天文日曆  (45個; 10.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "觀星/星系/宇宙  (43個; 9.9%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "總統府  (21個; 4.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "在中央氣象署  (14個; 3.2%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "太空天氣  (13個; 3.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "首都/都市  (9個; 2.1%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "天龍國  (8個; 1.8%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "天文台  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "101大樓  (7個; 1.6%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "日月蝕  (6個; 1.4%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "Openhouse  (6個; 1.4%)",
+                          "score": 2
+                        }
+                      ],
+                      "基隆": [
+                        {
+                          "text": "雨都  (106個; 24.3%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "基隆港/港口/漁港  (82個; 18.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "廟口夜市/廟口小吃/基隆夜市  (58個; 13.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "郵輪  (30個; 6.9%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "潮濕  (12個; 2.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "港務大樓  (12個; 2.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "海產/海鮮  (7個; 1.6%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "老鷹  (6個; 1.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "海運/船  (6個; 1.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "屋頂  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "東北季風  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "雞籠  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "海邊  (5個; 1.1%)",
+                          "score": 4
+                        }
+                      ],
+                      "阿里山": [
+                        {
+                          "text": "阿里山森林鐵路/小火車  (73個; 16.7%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "日出  (70個; 16.1%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "百年巨木/神木群/森林  (52個; 11.9%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "阿里山森林遊樂區/眠月線/風景名勝/旅遊景點  (41個; 9.4%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "雲海  (29個; 6.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "櫻花  (28個; 6.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "日式古蹟  (26個; 6.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "茶葉/高山茶  (23個; 5.3%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "檜木  (10個; 2.3%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "高山氣象觀測  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "高山青/姑娘美如水  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "霧  (5個; 1.1%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "原住民文化/鄒族  (5個; 1.1%)",
+                          "score": 2
+                        }
+                      ]
+                    };
+
+    const sheet = getSheetFromURL();
+    const data = allData[sheet];
+    const title = document.getElementById('station-title');
+    const container = document.getElementById('answers-container');
+
+    if (!data) {
+      title.innerText = '⚠ 無效的站名參數！請使用 ?sheet=站名';
+    } else {
+      title.innerText = '問題：' + sheet + ' 氣象站直觀印象';
+
+      data.forEach((ans) => {
+        let color = '#3b82f6'; // 藍色預設
+        if (ans.score >= 10) color = '#f59e0b'; // 橘色
+        else if (ans.score >= 6) color = '#10b981'; // 綠色
+
+        const parts = ans.text.match(/^(.+?)\s*(（?\(?\d+個;\s*\d+\.?\d*%[)）]?)$/);
+        let coloredText = ans.text;
+        if (parts) {
+          coloredText = `<span style="color: ${color};">${parts[1]}</span> ${parts[2]}`;
+        } else {
+          coloredText = `<span style="color: ${color};">${ans.text}</span>`;
+        }
+
+        const row = document.createElement('div');
+        row.className = 'answer-row';
+        row.innerHTML = `
+          <span class="answer-label" style="color: ${color};">
+            <span class="score-num">${ans.score}</span> <span style="color: black;">點：</span>
+          </span>
+          <span class="answer-text">${coloredText}</span>
+        `;
+        container.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>
